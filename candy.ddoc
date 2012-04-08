@@ -9,10 +9,10 @@ DDOC =
 <script language="JavaScript" src="candydoc/tree.js" type="text/javascript"></script>
 <script language="JavaScript" src="candydoc/explorer.js" type="text/javascript"></script>
 </head><body>
-<div id="tabarea"></div><div id="explorerclient"></div>
+<div id="tabarea"></div><div id="explorerclient" class="shaded_box"></div>
 <div id="content"><script>explorer.initialize("$(TITLE)");</script>
-    <table class="content">
-        <tr><td id="docbody"><h1>$(TITLE)</h1>$(BODY)</td></tr>
+    <table id="tablecontent" class="shaded_box">
+        <tr><td id="docbody"><h2>$(TITLE)</h2>$(BODY)</td></tr>
         <tr><td id="docfooter">
             Page was generated with
             <img src="candydoc/img/candydoc.gif" style="vertical-align:middle; position:relative; top:-1px">
@@ -40,11 +40,13 @@ DDOC_MEMBERS =
 $(DL $0)
 <script>explorer.outline.decSymbolLevel();</script>
 
-
+D_STRING = <font color="#A31515">$0</font>
+D_KEYWORD = <font color="#008">$0</font>
+D_COMMENT = <font color="#080">$0</font>
 DDOC_PARAM_ID =
 <td nowrap valign="top" style="padding-right: 8px">$0</td>
 
-
+DDOC_BLANKLINE  = $(BR)
 DDOC_PARAM =<span class="funcparam">$0</span>
 ADD_MODULES =<script>$(MODULES)</script>
 MODULE =explorer.packageExplorer.addModule("$0");

@@ -100,7 +100,7 @@ function TreeNode(text, iconSrc, hrefMode)
         if (name == "")
             name = "shim";
         
-        return "candydoc/img/tree/" + name + ".gif";
+        return "candydoc/img/tree/" + name + ".png";
     }
     
     function setSrc(icon, src)
@@ -294,18 +294,21 @@ function TreeNode(text, iconSrc, hrefMode)
             this.textSpan.style.backgroundColor = "";
             this.textSpan.style.color = "";
             this.textSpan.style.border = "";
+            this.textSpan.style.textDecoration = "none";
         }
         else if (mode == hlGrey)
         {
             this.textSpan.style.backgroundColor = "#aaaaaa";
             this.textSpan.style.color = "";
             this.textSpan.style.border = "";
+            this.textSpan.style.textDecoration = "none";
         }
         else if (mode == hlSelected)
         {
             this.textSpan.style.backgroundColor = "3399cc";
             this.textSpan.style.color = "white";
-            this.textSpan.style.border = "dotted 1px red";
+            this.textSpan.style.border = "dotted 1px 3399cc";
+            this.textSpan.style.textDecoration = "none";
         }
     }
     
@@ -346,6 +349,8 @@ function TreeNode(text, iconSrc, hrefMode)
         this.icon.width = 0;
         this.icon.height = 0;
     }
+    
+    this.textSpan.className = "treenode";
     
     this.icon.style.verticalAlign = "middle";
     this.icon.style.position = "relative";
