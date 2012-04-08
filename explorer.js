@@ -252,7 +252,7 @@ function Explorer()
         this.tabArea.onmousedown = new Function("return false;");
         this.tabArea.onclick = new Function("return true;");
         this.tabArea.onselectstart = new Function("return false;");
-        this.clientArea.onmousedown = new Function("return false;");
+//        this.clientArea.onmousedown = new Function("return false;");
         this.clientArea.onclick = new Function("return true;");
         this.clientArea.onselectstart = new Function("return false;");
         
@@ -269,7 +269,17 @@ function Explorer()
         this.tabs[name] = tab;
         this.tabCount++;
         
-        tab.domEntry = domEntry;
+        tab.domEntry = document.createElement("div");
+        tab.domEntry.className = "tabholder";
+        
+        var filterBox = document.createElement("input");
+        filterBox.type = "text";
+        filterBox.className = "filterbox";
+        filterBox.placeholder = "Search";
+        
+        tab.domEntry.appendChild(filterBox);
+        tab.domEntry.appendChild(domEntry);
+        
         tab.labelSpan = document.createElement("span");
         
         if (this.tabCount > 1)
@@ -288,7 +298,7 @@ function Explorer()
         tab.labelSpan.onclick = new Function("this.owner.setSelection('" + name + "');");
         
         this.tabArea.appendChild( tab.labelSpan );
-        this.clientArea.appendChild( domEntry );
+        this.clientArea.appendChild( tab.domEntry );
     }
     
     this.setSelection = function(tabName)

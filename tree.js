@@ -43,6 +43,7 @@ function TreeView(hrefMode)
     this.domEntry.style.fontSize = "10px";
     this.domEntry.style.cursor = "default";
     this.domEntry.style.whiteSpace = "nowrap";
+    this.domEntry.className = "treeview";
 }
 
 var idCounter = 0;
