@@ -259,12 +259,13 @@ function Explorer()
         this.outline.tree.createBranch( moduleName, "candydoc/img/outline/module.gif" );
         
         // create tabs
-        this.createTab("Outline", this.outline.tree.domEntry);
-        this.createTab("Package", this.packageExplorer.tree.domEntry);
+        this.createTab("Outline", this.outline.tree);
+        this.createTab("Package", this.packageExplorer.tree);
     }
     
-    this.createTab = function(name, domEntry)
+    this.createTab = function(name, tree)
     {
+        var domEntry = tree.domEntry;
         var tab = new Object();
         this.tabs[name] = tab;
         this.tabCount++;
@@ -299,6 +300,38 @@ function Explorer()
         
         this.tabArea.appendChild( tab.labelSpan );
         this.clientArea.appendChild( tab.domEntry );
+        
+        var iterate = function(node, predicate) {
+            predicate(node);
+            _.each(node.children, function(child) {
+                iterate(child, predicate);
+            });
+        }
+
+        var travelUp = function(node, predicate) {
+            if(!node)
+                return;
+            // don't process TreeView instance
+            if(node.isRoot)
+                return;
+            predicate(node);
+            if(node.parentNode)
+                travelUp(node.parentNode, predicate);
+        }
+
+        filterBox.onkeyup = _.bind(function() {
+            var filter = filterBox.value.toLowerCase();
+            iterate(tree.children[0], function(node) {
+                var hidden = (node.textName.toLowerCase().indexOf(filter) === -1) && filter != "";
+                var display = hidden ? "none" : "block";
+                node.domEntry.style.display = display;
+                if(!hidden) {
+                    travelUp(node.parentNode, function(parentNode) {
+                        parentNode.domEntry.style.display = display;
+                    });
+                }
+            });
+        }, this);
     }
     
     this.setSelection = function(tabName)

@@ -17,6 +17,7 @@ function TreeView(hrefMode)
     this.children = new Array();
     this.selection = null;
     this.hrefMode = hrefMode;
+    this.isRoot = true;
     
     this.createBranch = function(text, iconSrc)
     {
@@ -59,6 +60,7 @@ function TreeNode(text, iconSrc, hrefMode)
     this.lineDiv        = document.createElement("div");
     this.hierarchyImgs  = new Array();
     this.onclick        = null;
+    this.textName       = text;
     
     function createIcon()
     {
@@ -308,7 +310,7 @@ function TreeNode(text, iconSrc, hrefMode)
         {
             this.textSpan.style.backgroundColor = "#3399cc";
             this.textSpan.style.color = "white";
-            this.textSpan.style.border = "dotted 1px 3399cc";
+            this.textSpan.style.border = "solid 1px 3399cc";
             this.textSpan.style.textDecoration = "none";
         }
     }
