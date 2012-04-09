@@ -106,7 +106,12 @@ tbody
 /* Style for cell of above considered table that contains documentation itself. */
 #docbody
 {
-    padding: 16px 20px 20px 20px;
+    padding: 20px 20px 20px 20px;
+}
+
+h2.moduletitle
+{
+    margin-top: 0px;
 }
 
 dd
