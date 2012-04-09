@@ -38,17 +38,17 @@ function Marker()
                 childrenHeight = child.offsetHeight;
         }
         
-        this.top.style.height = term.offsetHeight;
-        this.middle.style.height = defHeight - childrenHeight;
-        this.bottom.style.height = childrenHeight;
+        this.top.style.height = (term.offsetHeight) + "px";
+        this.middle.style.height = (defHeight - childrenHeight) + "px";
+        this.bottom.style.height = (childrenHeight) + "px";
         
         if (childrenHeight == 0)
             this.bottom.style.display = "none";
         else
             this.bottom.style.display = "";
         
-        this.container.style.left = getLeft(term) - 8;
-        this.container.style.top = getTop(term);
+        this.container.style.left = (getLeft(term) - 8) + "px";
+        this.container.style.top = (getTop(term)) + "px";
         this.container.style.display = "";
     }
         
@@ -166,7 +166,7 @@ function Outline()
     this.mark = function(term)
     {
         this.marker.setTo(term);
-        window.scrollTo(0, getTop(term) - getWindowHeight() / 6);    
+        window.scrollTo(0, getTop(term) - getWindowHeight() / 20);    
     }
     
     var self = this;

@@ -49,6 +49,8 @@ span.decl
 {
     font-size: 10pt; font-weight: bold; color: #000000; text-align: left;
 /*     background-color: #f6f6f6; border-radius: 4px; padding: 3px; border: 1px solid #e6e6e6; */
+/*    border-bottom: 2px solid #b0b0b0;
+    padding-bottom: 3px;*/
 }
 /* Style appled to current declaration's symbol. E.g. 'foo' in 'void foo(int a, float b);' */
 span.currsymbol { color: #00732F }
@@ -106,7 +108,7 @@ tbody
 /* Style for cell of above considered table that contains documentation itself. */
 #docbody
 {
-    padding: 20px 20px 20px 20px;
+    padding: 18px 20px 20px 20px;
 }
 
 h2.moduletitle
