@@ -6,6 +6,7 @@ DDOC = <!DOCTYPE html>
 <link rel="stylesheet" type="text/css" href="candydoc/style.css">
 <!--[if lt IE 7]><link rel="stylesheet" type="text/css" href="candydoc/ie56hack.css"><![endif]-->
 <script language="JavaScript" src="candydoc/underscore-min.js" type="text/javascript"></script>
+<script language="JavaScript" src="candydoc/jquery.min.js" type="text/javascript"></script>
 <script language="JavaScript" src="candydoc/util.js" type="text/javascript"></script>
 <script language="JavaScript" src="candydoc/tree.js" type="text/javascript"></script>
 <script language="JavaScript" src="candydoc/explorer.js" type="text/javascript"></script>
@@ -28,21 +29,11 @@ $(ADD_MODULES)
 
 
 DDOC_DECL =
-<script>explorer.outline.writeEnabled = true;</script>
 $(DT <span class="decl">$0</span>)
-<script>explorer.outline.writeEnabled = false;</script>
-
-
 DDOC_PSYMBOL =
 <span class="currsymbol">$0</span>
-<script>explorer.outline.addDecl('$0');</script>
-
-
 DDOC_MEMBERS =
-<script>explorer.outline.incSymbolLevel();</script>
 $(DL $0)
-<script>explorer.outline.decSymbolLevel();</script>
-
 D_STRING = <font color="#A31515">$0</font>
 D_KEYWORD = <font color="#008">$0</font>
 D_COMMENT = <font color="#080">$0</font>

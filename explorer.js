@@ -156,31 +156,11 @@ function Outline()
         this.mountPoint = this.mountPoint.parentNode;
     }
 
-    this.addDecl = function(decl)
+    this.addDecl = function(decl, termRef)
     {
-        function getLastLeaf(elem)
-        {
-            if (elem.childNodes.length > 0)
-                return getLastLeaf(elem.lastChild);
-            else
-                return elem;
-        }
-
-        function getCurrentTerm()
-        {
-            var ret = getLastLeaf( document.getElementById("content") );
-            while (ret && ret.nodeName != "DT")
-                ret = ret.parentNode;
-            
-            return ret;
-        }
-        
-        if (this.writeEnabled)
-        {
-            var node = this.mountPoint.createChild(decl);
-            node.termRef = getCurrentTerm();
-            node.setOnclick( new Function("explorer.outline.mark(this.termRef);") );
-        }
+        var node = this.mountPoint.createChild(decl);
+        node.termRef = termRef;
+        node.setOnclick( new Function("explorer.outline.mark(this.termRef);") );
     }
 
     this.mark = function(term)
@@ -188,7 +168,41 @@ function Outline()
         this.marker.setTo(term);
         window.scrollTo(0, getTop(term) - getWindowHeight() / 6);    
     }
-        
+    
+    var self = this;
+    
+    var buildTreeImpl = function(parentElem)
+    {
+        self.incSymbolLevel();
+
+        parentElem.children("dl").each(function(i, child)
+        {
+            var builtDecl = false;
+            _.each(child.children, function(child)
+            {
+                if(child.tagName === "DT")
+                {
+                    var name = $(child).find(".currsymbol").html();
+                    builtDecl = name && name.length !== 0;
+                    if(builtDecl) {
+                        self.addDecl(name, child);
+                    }
+                }
+                else if(child.tagName === "DD")
+                {
+                    if(builtDecl)
+                        buildTreeImpl($(child));
+                }
+            });
+        });
+
+        self.decSymbolLevel();
+    }
+    
+    this.buildTree = function()
+    {
+        buildTreeImpl($("#docbody"));
+    }
     
     this.classRegExp.compile("(.*\b)?class(\b.*)?");
     this.structRegExp.compile("(.*\b)?struct(\b.*)?");
@@ -308,7 +322,7 @@ function Explorer()
             });
         }
 
-        var travelUp = function(node, predicate) {
+        var walkUpTree = function(node, predicate) {
             if(!node)
                 return;
             // don't process TreeView instance
@@ -316,7 +330,7 @@ function Explorer()
                 return;
             predicate(node);
             if(node.parentNode)
-                travelUp(node.parentNode, predicate);
+                walkUpTree(node.parentNode, predicate);
         }
 
         filterBox.onkeyup = _.bind(function() {
@@ -326,7 +340,7 @@ function Explorer()
                 var display = hidden ? "none" : "block";
                 node.domEntry.style.display = display;
                 if(!hidden) {
-                    travelUp(node.parentNode, function(parentNode) {
+                    walkUpTree(node.parentNode, function(parentNode) {
                         parentNode.domEntry.style.display = display;
                     });
                 }
@@ -346,3 +360,7 @@ function Explorer()
         this.tabs[tabName].domEntry.style.display = "";
     }
 }
+
+$(document).ready(function() {
+    explorer.outline.buildTree();
+});
