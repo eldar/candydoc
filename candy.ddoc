@@ -19,7 +19,7 @@ DDOC = <!DOCTYPE html>
         <tr><td id="docbody"><h2 class="moduletitle">$(TITLE)</h2>$(BODY)</td></tr>
         <tr><td id="docfooter">
             Page was generated with
-            <a href="https://github.com/eldar/candydoc"><img src="candydoc/img/candydoc.gif" style="vertical-align:middle; position:relative; top:-1px"></a>
+            <a href="https://github.com/eldar/candydoc"><img src="candydoc/img/logo.png" style="vertical-align:middle; position:relative; top:-1px"></a>
             on $(DATETIME)
         </td></tr>
     </table>
