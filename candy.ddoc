@@ -14,15 +14,18 @@ DDOC = <!DOCTYPE html>
 <div id="tabarea"></div>
 <div id="explorerclient" class="shaded_box">
 </div>
-<div id="content"><script>explorer.initialize("$(TITLE)");</script>
-    <table id="tablecontent" class="shaded_box">
-        <tr><td id="docbody"><h2 class="moduletitle">$(TITLE)</h2>$(BODY)</td></tr>
-        <tr><td id="docfooter">
+<div id="content" class="shaded_box">
+    <div id="docbody">
+<!--    <div id="docbody"> -->
+            <h2 class="moduletitle">$(TITLE)</h2>
+            $(BODY)
+<!--    </div> -->
+<!--    <div id="docfooter">
             Page was generated with
             <a href="https://github.com/eldar/candydoc"><img src="candydoc/img/logo.png" style="vertical-align:middle; position:relative; top:-1px"></a>
             on $(DATETIME)
-        </td></tr>
-    </table>
+        </td>-->
+    </div>
 </div>
 $(ADD_MODULES)
 </body></html>

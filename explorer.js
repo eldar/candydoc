@@ -4,8 +4,6 @@
    This file is javascript with classes that represents explorer window.
    And things related to navigation. */
    
-var explorer = new Explorer();
-
 ///////////////////////////////////////////////////////////////////////////////
 // Current symbol marker class constructor
 ///////////////////////////////////////////////////////////////////////////////
@@ -65,14 +63,7 @@ function Marker()
     this.container.appendChild(this.bottom);
     
     //document.body.appendChild( this.container );
-    
-    // Workaround bug in IE 5/6. We can not append anything to document body until
-    // full page load.
-    window.marker = this;
-    if (window.addEventListener)
-        window.addEventListener("load", new Function("document.body.appendChild( window.marker.container );"), false);
-    else if (window.attachEvent)
-        window.attachEvent("onload", new Function("document.body.appendChild( window.marker.container );"));
+    document.getElementById("docbody").appendChild(this.container);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -160,13 +151,16 @@ function Outline()
     {
         var node = this.mountPoint.createChild(decl);
         node.termRef = termRef;
-        node.setOnclick( new Function("explorer.outline.mark(this.termRef);") );
+        var self = this;
+        node.setOnclick(function() {
+            self.mark(this.termRef);
+        });
     }
 
     this.mark = function(term)
     {
         this.marker.setTo(term);
-        window.scrollTo(0, getTop(term) - getWindowHeight() / 20);    
+        term.scrollIntoView();
     }
     
     var self = this;
@@ -359,8 +353,11 @@ function Explorer()
         this.tabs[tabName].labelSpan.className = "activetab";
         this.tabs[tabName].domEntry.style.display = "";
     }
+    
+    this.initialize($("h2.moduletitle").html());
+    this.outline.buildTree();
 }
 
 $(document).ready(function() {
-    explorer.outline.buildTree();
+    new Explorer();
 });
