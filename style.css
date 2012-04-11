@@ -230,15 +230,6 @@ span.inactivetab
     padding: 12px 12px 12px 12px;
 }
 
-.filterbox
-{
-    width: 210px;
-/*    position: absolute;
-    top: 12px;
-    left: 12px;
-    width: 85%;*/
-}
-
 .treeview
 {
     position: absolute;
@@ -321,13 +312,28 @@ textarea:focus {
   padding-left: 14px;
   padding-right: 14px;
   margin-bottom: 0;
-  -webkit-border-radius: 14px;
-  -moz-border-radius: 14px;
-  border-radius: 14px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
 }
 
 
 
 .search-query {
     padding-left: 29px;
+}
+
+.icon-search {
+    position: absolute;
+    top: 6px;
+    left: 8px;
+    width: 16px;
+    height: 16px;
+    background-image: url("img/search.png");
+}
+
+.filterbox
+{
+    width: 176px;
+    height: 16px;
 }

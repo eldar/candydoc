@@ -281,11 +281,21 @@ function Explorer()
         tab.domEntry.className = "tabholder";
         
         var filterBox = document.createElement("input");
+        filterBox.style.position = "absolute";
         filterBox.type = "text";
-        filterBox.className = "filterbox";
+        filterBox.className = "filterbox search-query";
         filterBox.placeholder = "Search";
         
-        tab.domEntry.appendChild(filterBox);
+        var icon = document.createElement("div");
+        icon.className = "icon-search";
+
+        var filterDiv = document.createElement("div");
+        filterDiv.style.position = "relative";
+        
+        filterDiv.appendChild(filterBox);
+        filterDiv.appendChild(icon);
+        
+        tab.domEntry.appendChild(filterDiv);
         tab.domEntry.appendChild(domEntry);
         
         tab.labelSpan = document.createElement("span");

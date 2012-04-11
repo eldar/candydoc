@@ -6,25 +6,25 @@
 function getLeft(elem)
 {
     var ret = 0;
-	while (elem.offsetParent && elem.id !== "content")
-	{
-		ret += elem.offsetLeft;
-		elem = elem.offsetParent;
-	}
+    while (elem.offsetParent && elem.id !== "content")
+    {
+        ret += elem.offsetLeft;
+        elem = elem.offsetParent;
+    }
 
-	return ret;
+    return ret;
 }
 
 function getTop(elem)
 {
     var ret = 0;
-	while (elem.offsetParent && elem.id !== "content")
-	{
-		ret += elem.offsetTop;
-		elem = elem.offsetParent;
-	}
+    while (elem.offsetParent && elem.id !== "content")
+    {
+        ret += elem.offsetTop;
+        elem = elem.offsetParent;
+    }
 
-	return ret;
+    return ret;
 }
 
 function getWindowHeight()
