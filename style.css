@@ -30,10 +30,10 @@ body
 }
 
 /* Style used for all hyperlinks. */
-a:link {  color: #009900; text-decoration: none }
-a:visited {  color: #009999; text-decoration: none }
-a:hover {  color: #0033cc; text-decoration: none }
-a:active {  color: #0033cc; text-decoration: none }
+a:link {  color: black; text-decoration: none }
+a:visited {  color: black; text-decoration: none }
+a:hover {  color: black; text-decoration: none }
+a:active {  color: black; text-decoration: none }
 
 /*
 table.matrix
@@ -336,4 +336,9 @@ textarea:focus {
 {
     width: 176px;
     height: 16px;
+}
+
+.emptytag
+{
+    display: none;
 }

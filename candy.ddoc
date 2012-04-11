@@ -45,5 +45,5 @@ DDOC_PARAM_ID =
 
 DDOC_BLANKLINE  = $(BR)
 DDOC_PARAM =<span class="funcparam">$0</span>
-ADD_MODULES =<script>$(MODULES)</script>
-MODULE =explorer.packageExplorer.addModule("$0");
+ADD_MODULES =<span id="packages" class="emptytag">$(MODULES)</span>
+MODULE =<span class="emptytag module" modulename="$0"></span>

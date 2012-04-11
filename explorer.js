@@ -46,7 +46,7 @@ function Marker()
             this.bottom.style.display = "";
         
         this.container.style.left = (getLeft(term) - 18) + "px";
-        this.container.style.top = (getTop(term) - 15) + "px";
+        this.container.style.top = (getTop(term) - 17) + "px";
         this.container.style.display = "";
     }
         
@@ -250,8 +250,10 @@ function Explorer()
     this.tabs            = new Array();
     this.tabCount        = 0;
     
-    this.initialize = function(moduleName)
+    this.initialize = function()
     {
+        var moduleName = $("h2.moduletitle").html();
+        
         this.tabArea = document.getElementById("tabarea");
         this.clientArea = document.getElementById("explorerclient");
         
@@ -268,6 +270,15 @@ function Explorer()
         // create tabs
         this.createTab("Outline", this.outline.tree);
         this.createTab("Package", this.packageExplorer.tree);
+
+        // build tree of symbols
+        this.outline.buildTree();
+        
+        // build list of module
+        var self = this;
+        _.map($("#packages").children("span.module"), function(mod) {
+            self.packageExplorer.addModule(mod.getAttribute("moduleName"));
+        });
     }
     
     this.createTab = function(name, tree)
@@ -362,11 +373,8 @@ function Explorer()
         this.tabs[tabName].labelSpan.className = "activetab";
         this.tabs[tabName].domEntry.style.display = "";
     }
-    
-    this.initialize($("h2.moduletitle").html());
-    this.outline.buildTree();
 }
 
 $(document).ready(function() {
-    new Explorer();
+    new Explorer().initialize();
 });
