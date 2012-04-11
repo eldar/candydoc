@@ -45,8 +45,8 @@ function Marker()
         else
             this.bottom.style.display = "";
         
-        this.container.style.left = (getLeft(term) - 8) + "px";
-        this.container.style.top = (getTop(term)) + "px";
+        this.container.style.left = (getLeft(term) - 18) + "px";
+        this.container.style.top = (getTop(term) - 15) + "px";
         this.container.style.display = "";
     }
         
@@ -62,7 +62,6 @@ function Marker()
     this.container.appendChild(this.middle);
     this.container.appendChild(this.bottom);
     
-    //document.body.appendChild( this.container );
     document.getElementById("docbody").appendChild(this.container);
 }
 

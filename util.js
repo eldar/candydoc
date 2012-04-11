@@ -6,7 +6,7 @@
 function getLeft(elem)
 {
     var ret = 0;
-	while (elem.offsetParent)
+	while (elem.offsetParent && elem.id !== "content")
 	{
 		ret += elem.offsetLeft;
 		elem = elem.offsetParent;
@@ -18,7 +18,7 @@ function getLeft(elem)
 function getTop(elem)
 {
     var ret = 0;
-	while (elem.offsetParent)
+	while (elem.offsetParent && elem.id !== "content")
 	{
 		ret += elem.offsetTop;
 		elem = elem.offsetParent;
