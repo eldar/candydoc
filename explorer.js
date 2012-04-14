@@ -231,10 +231,8 @@ function PackageExplorer()
             node = node.child(path[i]);
             if (!node)
                 node = prev.createChild(path[i], (path.length == i + 1) ? moduleIco : packageIco);
-                
-            if (path.length == i + 1)
-                node.setRef(path[i] + ".html");
         }
+        node.setRef(mod + ".html");
     }
 }
 
