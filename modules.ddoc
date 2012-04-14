@@ -1,5 +1,0 @@
-MODULES =
-    $(MODULE helix.basic)
-    $(MODULE helix.color)
-    $(MODULE helix.config)
-    $(MODULE helix.linalgebra)
