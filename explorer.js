@@ -78,6 +78,7 @@ function Outline()
     this.templateRegExp = new RegExp("(.*\b)?template(\b.*)?");
     this.aliasRegExp    = new RegExp("(.*\b)?alias(\b.*)?");
     this.funcRegExp     = new RegExp(/.*\(.*/);
+    this.constrRegExp   = new RegExp(/.*this.*\(.*/);
     
     this.initialize = function()
     {
@@ -179,6 +180,15 @@ function Outline()
                 {
                     var name = $(child).find(".currsymbol").html();
                     builtDecl = name && name.length !== 0;
+                    if(!builtDecl) {
+                        // there might be a symbol that doesn't have name, ex. ctor/dtor
+                        if(self.constrRegExp.test($(child).html())) {
+                            builtDecl = true;
+                            name = "this";
+                        } else {
+                            console.log("didn't match " + $(child).html());
+                        }
+                    }
                     if(builtDecl) {
                         self.addDecl(name, child);
                     }
