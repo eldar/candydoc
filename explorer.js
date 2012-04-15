@@ -219,36 +219,46 @@ function Outline()
 function PackageExplorer(explorer)
 {
     this.explorer = explorer;
-    this.tree = new TreeView(true);    
+    this.tree = new TreeView(true);
+    this.ajaxReload = false;  // for now switch ajax loading off
     
     this.loadModule = function(mod)
     {
         if(mod === explorer.currentModule)
             return;
         
-        var extractContent = function(text)
-        {
-            var start = text.indexOf('<h2 class="moduletitle">'),
-                end = text.lastIndexOf('<span id="docbody_end"/>');
-            return text.slice(start, end);
-        }
-        
-        $("#loadingdoc").css({display: "inline-block"});
-        
         var file = mod + ".html";
-        $.ajax({
-            url: file,
-            dataType: "text",
-            success: function(data) {
-                $("#loadingdoc").fadeOut();
-                $("#docbody").html(extractContent(data));
-                explorer.moduleTitleNode().scrollIntoView()
-                explorer.buildSymbolTree();
-            },
-            error: function(e) {
-                location.href = file;
+
+        if(!this.ajaxReload)
+        {
+            location.href = file;
+            return;
+        }
+        else
+        {
+            $("#loadingdoc").css({display: "inline-block"});
+
+            var extractContent = function(text)
+            {
+                var start = text.indexOf('<h2 class="moduletitle">'),
+                    end = text.lastIndexOf('<span id="docbody_end"/>');
+                return text.slice(start, end);
             }
-        });
+
+            $.ajax({
+                url: file,
+                dataType: "text",
+                success: function(data) {
+                    $("#loadingdoc").fadeOut();
+                    $("#docbody").html(extractContent(data));
+                    explorer.moduleTitleNode().scrollIntoView()
+                    explorer.buildSymbolTree();
+                },
+                error: function(e) {
+                    location.href = file;
+                }
+            });
+        }
     }
     
     this.addModule = function(mod)
@@ -300,12 +310,18 @@ function Explorer()
         this.tabArea.onmousedown = new Function("return false;");
         this.tabArea.onclick = new Function("return true;");
         this.tabArea.onselectstart = new Function("return false;");
-        this.clientArea.onclick = new Function("return true;");
+        this.clientArea.onclick = new Function("return true;")
         this.clientArea.onselectstart = new Function("return false;");
         
         // create tabs
+        this.createTab("Modules", this.packageExplorer.tree);
         this.createTab("Symbols", this.outline.tree);
-        this.createTab("Package", this.packageExplorer.tree);
+
+        // reinitialize state
+        var tabName = $.cookie("currentTab");
+        console.log("new tab: " + tabName);
+        if(tabName)
+            this.setSelection(tabName);
 
         // build list of module
         var self = this;
@@ -421,6 +437,7 @@ function Explorer()
         
         this.tabs[tabName].labelSpan.className = "activetab";
         this.tabs[tabName].domEntry.style.display = "";
+        $.cookie("currentTab", tabName);
     }
 }
 
