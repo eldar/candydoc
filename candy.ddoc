@@ -14,19 +14,19 @@ DDOC = <!DOCTYPE html>
 <div id="tabarea"></div>
 <div id="explorerclient" class="shaded_box">
 </div>
+<div id="loadingdoc">Loading...</div>
 <div id="content" class="shaded_box">
     <div id="docbody">
-<!--    <div id="docbody"> -->
-            <h2 class="moduletitle">$(TITLE)</h2>
-            $(BODY)
-<!--    </div> -->
+        <h2 class="moduletitle">$(TITLE)</h2>
+        $(BODY)
+        <span id="docbody_end"/>
+    </div>
+</div>
 <!--    <div id="docfooter">
             Page was generated with
             <a href="https://github.com/eldar/candydoc"><img src="candydoc/img/logo.png" style="vertical-align:middle; position:relative; top:-1px"></a>
             on $(DATETIME)
         </td>-->
-    </div>
-</div>
 $(ADD_MODULES)
 </body></html>
 

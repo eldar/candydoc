@@ -71,15 +71,20 @@ function Marker()
 function Outline()
 {
     this.tree           = new TreeView();
-    this.mountPoint     = null;    
-    this.writeEnabled   = false;
-    this.marker         = new Marker();        
-    this.classRegExp    = new RegExp;
-    this.structRegExp   = new RegExp;
-    this.enumRegExp     = new RegExp;
-    this.templateRegExp = new RegExp;
-    this.aliasRegExp    = new RegExp;
-    this.funcRegExp     = new RegExp;
+   
+    this.classRegExp    = new RegExp("(.*\b)?class(\b.*)?");
+    this.structRegExp   = new RegExp("(.*\b)?struct(\b.*)?");
+    this.enumRegExp     = new RegExp("(.*\b)?enum(\b.*)?");
+    this.templateRegExp = new RegExp("(.*\b)?template(\b.*)?");
+    this.aliasRegExp    = new RegExp("(.*\b)?alias(\b.*)?");
+    this.funcRegExp     = new RegExp(/.*\(.*/);
+    
+    this.initialize = function()
+    {
+        this.mountPoint = null;
+        this.tree.clear();
+        this.marker = new Marker();
+    }
     
     this.incSymbolLevel = function()
     {
@@ -150,10 +155,7 @@ function Outline()
     {
         var node = this.mountPoint.createChild(decl);
         node.termRef = termRef;
-        var self = this;
-        node.setOnclick(function() {
-            self.mark(this.termRef);
-        });
+        node.setOnclick(_.bind(this.mark, this, termRef));
     }
 
     this.mark = function(term)
@@ -196,13 +198,6 @@ function Outline()
     {
         buildTreeImpl($("#docbody"));
     }
-    
-    this.classRegExp.compile("(.*\b)?class(\b.*)?");
-    this.structRegExp.compile("(.*\b)?struct(\b.*)?");
-    this.enumRegExp.compile("(.*\b)?enum(\b.*)?");
-    this.templateRegExp.compile("(.*\b)?template(\b.*)?");
-    this.aliasRegExp.compile("(.*\b)?alias(\b.*)?");
-    this.funcRegExp.compile(/.*\(.*/);    
 }
 
 
@@ -211,9 +206,40 @@ function Outline()
 ///////////////////////////////////////////////////////////////////////////////
 // Package explorer class constructor
 ///////////////////////////////////////////////////////////////////////////////
-function PackageExplorer()
+function PackageExplorer(explorer)
 {
+    this.explorer = explorer;
     this.tree = new TreeView(true);    
+    
+    this.loadModule = function(mod)
+    {
+        if(mod === explorer.currentModule)
+            return;
+        
+        var extractContent = function(text)
+        {
+            var start = text.indexOf('<h2 class="moduletitle">'),
+                end = text.lastIndexOf('<span id="docbody_end"/>');
+            return text.slice(start, end);
+        }
+        
+        $("#loadingdoc").css({display: "inline-block"});
+        
+        var file = mod + ".html";
+        $.ajax({
+            url: file,
+            dataType: "text",
+            success: function(data) {
+                $("#loadingdoc").fadeOut();
+                $("#docbody").html(extractContent(data));
+                explorer.moduleTitleNode().scrollIntoView()
+                explorer.buildSymbolTree();
+            },
+            error: function(e) {
+                location.href = file;
+            }
+        });
+    }
     
     this.addModule = function(mod)
     {
@@ -232,7 +258,14 @@ function PackageExplorer()
             if (!node)
                 node = prev.createChild(path[i], (path.length == i + 1) ? moduleIco : packageIco);
         }
-        node.setRef(mod + ".html");
+        var file = mod + ".html";
+        node.setRef(file);
+
+        var self = this;
+        $(node.domEntry).find("a").click(function() {
+            self.loadModule(mod);
+            return false;
+        });
     }
 }
 
@@ -244,14 +277,12 @@ function PackageExplorer()
 function Explorer()
 {
     this.outline         = new Outline();
-    this.packageExplorer = new PackageExplorer();
+    this.packageExplorer = new PackageExplorer(this);
     this.tabs            = new Array();
     this.tabCount        = 0;
     
     this.initialize = function()
     {
-        var moduleName = $("h2.moduletitle").html();
-        
         this.tabArea = document.getElementById("tabarea");
         this.clientArea = document.getElementById("explorerclient");
         
@@ -259,24 +290,34 @@ function Explorer()
         this.tabArea.onmousedown = new Function("return false;");
         this.tabArea.onclick = new Function("return true;");
         this.tabArea.onselectstart = new Function("return false;");
-//        this.clientArea.onmousedown = new Function("return false;");
         this.clientArea.onclick = new Function("return true;");
         this.clientArea.onselectstart = new Function("return false;");
         
-        this.outline.tree.createBranch( moduleName, "candydoc/img/outline/module.gif" );
-        
         // create tabs
-        this.createTab("Outline", this.outline.tree);
+        this.createTab("Symbols", this.outline.tree);
         this.createTab("Package", this.packageExplorer.tree);
 
-        // build tree of symbols
-        this.outline.buildTree();
-        
         // build list of module
         var self = this;
         _.map($("#packages").children("span.module"), function(mod) {
             self.packageExplorer.addModule(mod.getAttribute("moduleName"));
         });
+
+        this.buildSymbolTree();
+    }
+    
+    this.moduleTitleNode = function()
+    {
+        return $("h2.moduletitle")[0];
+    }
+    
+    this.buildSymbolTree = function()
+    {
+        this.outline.initialize();
+        this.currentModule = this.moduleTitleNode().innerHTML;
+        $("title").html(this.currentModule);
+        this.outline.tree.createBranch(this.currentModule, "candydoc/img/outline/module.gif");
+        this.outline.buildTree();
     }
     
     this.createTab = function(name, tree)

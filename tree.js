@@ -14,7 +14,7 @@ var hlSelected = 2;
 function TreeView(hrefMode)
 {
     this.domEntry = document.createElement("div");
-    this.children = new Array();
+    this.children = [];
     this.selection = null;
     this.hrefMode = hrefMode;
     this.isRoot = true;
@@ -39,6 +39,14 @@ function TreeView(hrefMode)
             }
             
         return ret;
+    }
+    
+    var self = this;
+    
+    this.clear = function()
+    {
+        self.children = [];
+        self.domEntry.innerHTML = "";
     }
     
     this.domEntry.style.fontSize = "10px";
