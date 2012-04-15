@@ -274,7 +274,7 @@ pre.d_code
     border-radius: 6px;
     padding: 18px;
     background-color: #ececec;
-    font-family: 'Bitstream Vera Sans Mono','Courier New',monospace;
+    font-family: monospace;
 }
 
 /* Style input box */
